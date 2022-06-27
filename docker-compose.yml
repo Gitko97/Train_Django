@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  django_backend:
+    build:
+      context: ./1
+    volumes:
+      - static:/static
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"z
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - django_backend
+
+volumes:
+  static:
+    driver: local
